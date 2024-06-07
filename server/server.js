@@ -14,6 +14,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+//import routes
+const postRouter = require("./src/router/post.router");
+
+//define routes
+app.use(constants.API.PREFIX.concat("/post"), postRouter);
+
 //error handling middleware
 app.use(errorHandlerMiddleware);
 
