@@ -1,10 +1,12 @@
 const express = require("express");
 const postController = require("../controller/post.controller");
+const multer = require("multer");
 
 const router = express.Router();
 
-// Create a new post
-router.post("/createpost", postController.CreatePost);
+const upload = multer({ dest: "uploads/" });
+
+router.post("/createpost", upload.single("image"), postController.CreatePost);
 
 // Get all posts
 router.get("/getposts", postController.GetPosts);

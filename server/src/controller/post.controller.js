@@ -1,28 +1,29 @@
 const { StatusCodes } = require("http-status-codes");
 const Post = require("../model/post");
+const fs = require("fs");
+const path = require("path");
 
 const CreatePost = async (req, res) => {
   try {
-    // Get the title, description, and image from the request body
-    const { title, description, image } = req.body;
+    const { title, description } = req.body;
+    let imagePath = "";
 
-    // Construct the object for post data
+    if (req.file) {
+      imagePath = path.join("uploads", req.file.filename);
+    }
+
     const postData = {
-      title: title,
-      description: description,
-      image: image,
+      title,
+      description,
+      image: imagePath,
     };
 
-    // Create a new post with the post data
     const post = new Post(postData);
-
-    // Save the post
     await post.save();
 
-    // Send a response to the client
     res
       .status(StatusCodes.CREATED)
-      .json({ message: "Post created successfully", post: post });
+      .json({ message: "Post created successfully", post });
   } catch (error) {
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
@@ -58,17 +59,37 @@ const GetPost = async (req, res) => {
       .json({ message: error.message });
   }
 };
+
 const UpdatePost = async (req, res) => {
   try {
     const postId = req.params.id;
-    const UpdatePost = await Post.findByIdAndUpdate(postId, req.body);
-    if (!UpdatePost) {
-      res.status(StatusCodes.NOT_FOUND).json({ message: "Post not found" });
+    const postData = req.body;
+
+    // Check if a new image file is provided
+    if (req.file) {
+      // If a new image is provided, update the image field
+      postData.image = req.file; // Update the image field with the new path
     }
-    res
-      .status(StatusCodes.OK)
-      .json({ message: "Post updated successfully", post: UpdatePost });
+
+    // Find the post by ID and update with the new data
+    const updatedPost = await Post.findByIdAndUpdate(postId, postData, {
+      new: true, // Return the updated document
+    });
+
+    if (!updatedPost) {
+      // If no post is found with the given ID
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ message: "Post not found" });
+    }
+
+    // Respond with the updated post data
+    res.status(StatusCodes.OK).json({
+      message: "Post updated successfully",
+      post: updatedPost,
+    });
   } catch (error) {
+    // Handle errors
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ message: error.message });
