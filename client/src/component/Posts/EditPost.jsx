@@ -7,18 +7,26 @@ const EditPost = ({ open, setOpen, post, onUpdate }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState(null);
+  const [newImagePreview, setNewImagePreview] = useState(null); // State to store new image preview
 
   useEffect(() => {
     if (post) {
       form.setFieldsValue({
         title: post.title,
-        description: post.description,
+        description: post.description
       });
     }
   }, [post, form]);
 
   const handleFileChange = ({ file }) => {
+    console.log("Selected file:", file.originFileObj);
     setFile(file.originFileObj);
+    // Generate a preview URL for the selected image
+    const reader = new FileReader();
+    reader.readAsDataURL(file.originFileObj);
+    reader.onloadend = () => {
+      setNewImagePreview(reader.result);
+    };
   };
 
   const handleOk = async () => {
@@ -28,21 +36,28 @@ const EditPost = ({ open, setOpen, post, onUpdate }) => {
       formData.append("title", values.title);
       formData.append("description", values.description);
       if (file) {
+        console.log("Appending file:", file);
         formData.append("image", file);
       }
       setLoading(true);
-      await axios.put(
+      const response = await axios.put(
         `http://localhost:8080/api/v1/post/updatepost/${post._id}`,
         formData,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
-          },
+            "Content-Type": "multipart/form-data"
+          }
         }
       );
+      if (response.status === 200) {
+        message.success("Post updated successfully");
+        setNewImagePreview(null); // Reset the new image preview
+      } else {
+        message.error("Failed to update post");
+      }
       setLoading(false);
-      message.success("Post updated successfully");
       form.resetFields();
+      setFile(null);
       setOpen(false);
       if (onUpdate) {
         onUpdate();
@@ -56,7 +71,14 @@ const EditPost = ({ open, setOpen, post, onUpdate }) => {
 
   const handleCancel = () => {
     form.resetFields();
+    setFile(null);
+    setNewImagePreview(null); // Reset the new image preview
     setOpen(false);
+  };
+
+  const beforeUpload = (file) => {
+    setFile(file);
+    return false; // Prevent default upload behavior
   };
 
   return (
@@ -81,7 +103,7 @@ const EditPost = ({ open, setOpen, post, onUpdate }) => {
           rules={[
             { required: true, message: "Title is required!" },
             { min: 3, message: "Title must be at least 3 characters long" },
-            { max: 100, message: "Title cannot exceed 100 characters" },
+            { max: 100, message: "Title cannot exceed 100 characters" }
           ]}
         >
           <Input placeholder="Enter post title" />
@@ -96,9 +118,9 @@ const EditPost = ({ open, setOpen, post, onUpdate }) => {
 
         <Form.Item
           name="image"
-          label={<span style={{ fontSize: "16px" }}>Upload Image :</span>}
+          label={<span style={{ fontSize: "16px" }}>Upload New Image :</span>}
         >
-          <Upload beforeUpload={() => false} onChange={handleFileChange}>
+          <Upload beforeUpload={beforeUpload}>
             <Button icon={<UploadOutlined />}>Select File</Button>
           </Upload>
         </Form.Item>

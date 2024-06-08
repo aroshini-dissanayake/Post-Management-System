@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Layout, Button, Row, Col, Popconfirm, message } from "antd";
 import axios from "axios";
-import Logo from "../Sidebar/Logo";
 import MenuList from "../Sidebar/MenuList";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import EditPost from "./EditPost";
@@ -75,7 +74,7 @@ const SpecificPostDetails = () => {
             padding: "20px",
             backgroundColor: "#fff",
             borderRadius: "8px",
-            boxShadow: "0 0 10px rgba(0,0,0,0.1)",
+            boxShadow: "0 0 10px rgba(0,0,0,0.1)"
           }}
         >
           <Row gutter={[16, 16]}>
@@ -85,7 +84,7 @@ const SpecificPostDetails = () => {
               style={{
                 display: "flex",
                 justifyContent: "center",
-                alignItems: "center",
+                alignItems: "center"
               }}
             >
               <img
@@ -94,7 +93,7 @@ const SpecificPostDetails = () => {
                 style={{
                   width: "100%",
                   height: "auto",
-                  objectFit: "cover",
+                  objectFit: "cover"
                 }}
               />
             </Col>
@@ -109,7 +108,7 @@ const SpecificPostDetails = () => {
                       style={{
                         color: "green",
                         fontSize: "18px",
-                        marginRight: 20,
+                        marginRight: 20
                       }}
                     />
                   }
@@ -138,7 +137,7 @@ const SpecificPostDetails = () => {
                   style={{
                     marginTop: "30px",
                     fontSize: "30px",
-                    textAlign: "left",
+                    textAlign: "left"
                   }}
                 >
                   {title}
@@ -151,7 +150,7 @@ const SpecificPostDetails = () => {
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                     whiteSpace: "pre-wrap",
-                    wordWrap: "break-word",
+                    wordWrap: "break-word"
                   }}
                 >
                   {description}
