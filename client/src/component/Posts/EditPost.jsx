@@ -12,7 +12,7 @@ const EditPost = ({ open, setOpen, post, onUpdate }) => {
     if (post) {
       form.setFieldsValue({
         title: post.title,
-        description: post.description,
+        description: post.description
       });
     }
   }, [post, form]);
@@ -31,17 +31,21 @@ const EditPost = ({ open, setOpen, post, onUpdate }) => {
         formData.append("image", file);
       }
       setLoading(true);
-      await axios.put(
+      const response = await axios.put(
         `http://localhost:8080/api/v1/post/updatepost/${post._id}`,
         formData,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
-          },
+            "Content-Type": "multipart/form-data"
+          }
         }
       );
+      if (response.status === 200) {
+        message.success("Post updated successfully");
+      } else {
+        message.error("Failed to update post");
+      }
       setLoading(false);
-      message.success("Post updated successfully");
       form.resetFields();
       setOpen(false);
       if (onUpdate) {
@@ -81,7 +85,7 @@ const EditPost = ({ open, setOpen, post, onUpdate }) => {
           rules={[
             { required: true, message: "Title is required!" },
             { min: 3, message: "Title must be at least 3 characters long" },
-            { max: 100, message: "Title cannot exceed 100 characters" },
+            { max: 100, message: "Title cannot exceed 100 characters" }
           ]}
         >
           <Input placeholder="Enter post title" />

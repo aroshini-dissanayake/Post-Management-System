@@ -2,6 +2,7 @@ const { StatusCodes } = require("http-status-codes");
 const Post = require("../model/post");
 const fs = require("fs");
 const path = require("path");
+const multer = require("multer");
 
 const CreatePost = async (req, res) => {
   try {
@@ -15,7 +16,7 @@ const CreatePost = async (req, res) => {
     const postData = {
       title,
       description,
-      image: imagePath,
+      image: imagePath
     };
 
     const post = new Post(postData);
@@ -60,6 +61,18 @@ const GetPost = async (req, res) => {
   }
 };
 
+// Configure multer for file uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  }
+});
+
+const upload = multer({ storage });
+
 const UpdatePost = async (req, res) => {
   try {
     const postId = req.params.id;
@@ -67,13 +80,12 @@ const UpdatePost = async (req, res) => {
 
     // Check if a new image file is provided
     if (req.file) {
-      // If a new image is provided, update the image field
-      postData.image = req.file; // Update the image field with the new path
+      postData.image = req.file.path; // Update the image field with the new path
     }
 
     // Find the post by ID and update with the new data
     const updatedPost = await Post.findByIdAndUpdate(postId, postData, {
-      new: true, // Return the updated document
+      new: true // Return the updated document
     });
 
     if (!updatedPost) {
@@ -86,7 +98,7 @@ const UpdatePost = async (req, res) => {
     // Respond with the updated post data
     res.status(StatusCodes.OK).json({
       message: "Post updated successfully",
-      post: updatedPost,
+      post: updatedPost
     });
   } catch (error) {
     // Handle errors
@@ -113,4 +125,11 @@ const DeletePost = async (req, res) => {
   }
 };
 
-module.exports = { CreatePost, GetPosts, GetPost, UpdatePost, DeletePost };
+module.exports = {
+  CreatePost,
+  GetPosts,
+  GetPost,
+  UpdatePost,
+  upload,
+  DeletePost
+};

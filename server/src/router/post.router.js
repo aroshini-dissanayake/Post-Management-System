@@ -15,8 +15,11 @@ router.get("/getposts", postController.GetPosts);
 router.get("/getpost/:id", postController.GetPost);
 
 // Update a post by id
-router.put("/updatepost/:id", postController.UpdatePost);
-
+router.put(
+  "/updatepost/:id",
+  postController.upload.single("image"), // Use multer middleware to handle single file upload
+  postController.UpdatePost
+);
 // Delete a post by id
 router.delete("/deletepost/:id", postController.DeletePost);
 

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Logo from "../component/Sidebar/Logo";
 import MenuList from "../component/Sidebar/MenuList";
 import { Layout, Button, Modal } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
@@ -18,7 +17,6 @@ const Dashboard = () => {
   return (
     <Layout>
       <Sider className="sidebar">
-        <Logo />
         <MenuList />
       </Sider>
       <Layout>
