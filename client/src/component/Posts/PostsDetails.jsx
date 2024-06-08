@@ -40,23 +40,30 @@ const PostsDetails = () => {
                     marginBottom: "15px",
                     height: "auto",
                     display: "flex",
-                    flexDirection: "column",
+                    flexDirection: "column"
                   }}
-                  cover={
-                    post.image && (
+                >
+                  {post.image && (
+                    <div style={{ height: "200px" }}>
+                      {" "}
                       <img
                         alt="post"
                         src={`http://localhost:8080/${post.image}`}
-                        style={{ height: "200px", objectFit: "cover" }}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "contain"
+                        }}
                       />
-                    )
-                  }
-                >
+                    </div>
+                  )}
+
                   <h3
                     style={{
                       textAlign: "justify",
                       marginBottom: "10px",
-                      wordWrap: "break-word",
+                      marginTop: "10px",
+                      wordWrap: "break-word"
                     }}
                   >
                     {post.title}

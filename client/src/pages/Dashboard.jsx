@@ -20,7 +20,7 @@ const Dashboard = () => {
         <MenuList />
       </Sider>
       <Layout>
-        <Content style={{ padding: "20px" }}>
+        <Content style={{ padding: "20px", marginTop: "30px" }}>
           <div className="header-container">
             <h1 className="header-title">Posts </h1>
             <div className="header-buttons">

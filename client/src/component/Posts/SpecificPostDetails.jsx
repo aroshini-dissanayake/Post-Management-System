@@ -26,8 +26,8 @@ const SpecificPostDetails = () => {
       const postData = response.data.post;
       setTitle(postData.title);
       setDescription(postData.description);
-      setImage(postData.image); // Set image URL
-      setEditPost(postData); // Update editPost with fetched data
+      setImage(postData.image);
+      setEditPost(postData);
     } catch (error) {
       console.error("Error fetching post:", error);
     }
@@ -135,7 +135,7 @@ const SpecificPostDetails = () => {
               <div style={{ padding: "0 20px" }}>
                 <h1
                   style={{
-                    marginTop: "30px",
+                    marginTop: "60px",
                     fontSize: "30px",
                     textAlign: "left"
                   }}

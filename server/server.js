@@ -27,8 +27,12 @@ app.use(constants.API.PREFIX.concat("/post"), postRouter);
 //error handling middleware
 app.use(errorHandlerMiddleware);
 
+app.get("/", (req, res) => {
+  res.send("Welcome to the Post Management System"); // Send a simple response
+});
+
 //404 route
-app.use((req, res, next) => {
+app.use((req, res) => {
   throw new NotFoundError(`Route not found ${req.originalUrl}`);
 });
 

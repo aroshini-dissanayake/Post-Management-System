@@ -1,8 +1,7 @@
 import { Menu } from "antd";
 import { useState, useEffect } from "react";
-import { HomeOutlined, RollbackOutlined } from "@ant-design/icons";
+import { HomeOutlined } from "@ant-design/icons";
 import { useNavigate, useLocation } from "react-router-dom";
-import { FaEnvelope, FaUser, FaUsers, FaArrowRight } from "react-icons/fa";
 
 const MenuList = () => {
   const navigate = useNavigate();
@@ -23,33 +22,8 @@ const MenuList = () => {
     {
       key: "/",
       icon: <HomeOutlined />,
-      label: "Dashboard",
-    },
-    // {
-    //   key: "/postsdetails",
-    //   icon: <FaArrowRight />,
-    //   label: "Publishing",
-    // },
-    // {
-    //   key: "/messages",
-    //   icon: <FaEnvelope />,
-    //   label: "messages",
-    // },
-    // {
-    //   key: "/team",
-    //   icon: <FaUsers />,
-    //   label: "Teams",
-    // },
-    // {
-    //   key: "/accounts",
-    //   icon: <FaUser />,
-    //   label: "Account",
-    // },
-    // {
-    //   key: "/logout",
-    //   icon: <RollbackOutlined />,
-    //   label: "Logout",
-    // },
+      label: "Dashboard"
+    }
   ];
 
   return (
